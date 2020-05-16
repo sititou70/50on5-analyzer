@@ -19,20 +19,26 @@ if [ ! -e "$WORDLIST_FILE" ]; then
     cd ..
   fi
 
+  TARGET_PREFIX="アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワウヲン"
   cat $MECAB_DIR/mecab-ipadic/Noun*.csv |
     iconv -f=euc-jp -t=utf8 |
+    grep -v ",人名," |
     awk -F, '{print $12 "\t" $1}' \
-      >$WORDLIST_FILE.notuniq
+      >$WORDLIST_FILE.concat
   cat $MECAB_DIR/mecab-ipadic/Verb.csv |
     iconv -f=euc-jp -t=utf8 |
     grep ",基本形," |
     awk -F, '{print $12 "\t" $1}' \
-      >>$WORDLIST_FILE.notuniq
+      >>$WORDLIST_FILE.concat
   cat $MECAB_DIR/mecab-ipadic/Adj.csv |
     iconv -f=euc-jp -t=utf8 |
     grep ",基本形," |
     awk -F, '{print $12 "\t" $1}' \
-      >>$WORDLIST_FILE.notuniq
-  cat $WORDLIST_FILE.notuniq | sort | awk '{print $2 "\t" $1}' | uniq -f 1 >$WORDLIST_FILE
-  rm -rf $WORDLIST_FILE.notuniq
+      >>$WORDLIST_FILE.concat
+  cat $WORDLIST_FILE.concat |
+    grep "^[$TARGET_PREFIX]" |
+    sort -r |
+    awk '{print $2 "\t" $1}' |
+    uniq -f 1 >$WORDLIST_FILE
+  rm -rf $WORDLIST_FILE.concat
 fi

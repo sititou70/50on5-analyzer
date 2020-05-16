@@ -4,6 +4,5 @@ cd $(dirname $0)
 
 . settings.sh
 
-if [ "$(docker volume ls | grep "$DB_VOLUMENAME")" != "" ]; then
-  docker volume rm $DB_VOLUMENAME
-fi
+[ -e "$WORDLIST_FILE" ] && rm -f $WORDLIST_FILE
+[ "$(docker volume ls | grep "$DB_VOLUMENAME")" != "" ] && docker volume rm $DB_VOLUMENAME
