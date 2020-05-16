@@ -17,8 +17,6 @@ function exit_handler() {
 }
 trap exit_handler 1 2 3 15
 
-export WORDS_LENGTH=$1
-
 ## launch database
 docker run \
   --name $DB_CONTAINER_NAME \
@@ -35,6 +33,6 @@ docker run \
   --default-authentication-plugin=mysql_native_password \
   --secure-file-priv=/docker-entrypoint-initdb.d
 
-npx ts-node index.ts
+$@
 
 kill_db

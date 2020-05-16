@@ -21,18 +21,18 @@ if [ ! -e "$WORDLIST_FILE" ]; then
 
   cat $MECAB_DIR/mecab-ipadic/Noun*.csv |
     iconv -f=euc-jp -t=utf8 |
-    cut -d "," -f 12 \
+    awk -F, '{print $12 "\t" $1}' \
       >$WORDLIST_FILE.notuniq
   cat $MECAB_DIR/mecab-ipadic/Verb.csv |
     iconv -f=euc-jp -t=utf8 |
     grep ",基本形," |
-    cut -d "," -f 12 \
+    awk -F, '{print $12 "\t" $1}' \
       >>$WORDLIST_FILE.notuniq
   cat $MECAB_DIR/mecab-ipadic/Adj.csv |
     iconv -f=euc-jp -t=utf8 |
     grep ",基本形," |
-    cut -d "," -f 12 \
+    awk -F, '{print $12 "\t" $1}' \
       >>$WORDLIST_FILE.notuniq
-  cat $WORDLIST_FILE.notuniq | sort | uniq >$WORDLIST_FILE
+  cat $WORDLIST_FILE.notuniq | sort | awk '{print $2 "\t" $1}' | uniq -f 1 >$WORDLIST_FILE
   rm -rf $WORDLIST_FILE.notuniq
 fi

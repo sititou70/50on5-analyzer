@@ -2,6 +2,8 @@
 set -eu
 cd $(dirname $0)
 
+. settings.sh
+
 # main
 ./environment/run.sh
-./analyzer/run.sh $@
+./analyzer/run.sh npx ts-node get_50on_table.ts $1
