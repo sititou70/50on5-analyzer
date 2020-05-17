@@ -6,4 +6,4 @@ cd $(dirname $0)
 
 # main
 ./environment/run.sh
-./analyzer/run.sh npx ts-node get_50on_table.ts $1
+./analyzer/run.sh npx ts-node get50onTable.ts $1
